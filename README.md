@@ -11,7 +11,6 @@ From ```_PackageManager``` install:
 - ScriptParasite
 - froGH
 - Human (not HumanUI)
-- Assembler
 	
 ### other software
 	
