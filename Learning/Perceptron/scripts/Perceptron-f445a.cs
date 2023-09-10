@@ -55,11 +55,11 @@ public abstract class Script_Instance_f445a : GH_ScriptInstance
   private void RunScript(bool reset, bool go, int nData, double LR, ref object Points, ref object inf, ref object line, ref object Perceptron_line, ref object Weights, ref object error)
   {
     // reset & setup
-    if (reset || pTron == null)
+    if (reset || perceptron == null)
     {
       count = 0;
-      training = GenerateTrainingData(nData);
-      pTron = new Perceptron(training[0].inputs.Length, LR);
+      trainingData = GenerateTrainingData(nData);
+      perceptron = new Perceptron(trainingData[0].inputs.Length, LR);
       inferences = new List<int>();
     }
 
@@ -68,37 +68,37 @@ public abstract class Script_Instance_f445a : GH_ScriptInstance
     if (go)
     {
       // train Perceptron one point at a time (for animation)
-      pTron.Train(training[count].inputs, training[count].answer);
-      count = (count + 1) % training.Length;
+      perceptron.Train(trainingData[count].inputs, trainingData[count].label);
+      count = (count + 1) % trainingData.Length;
 
       // make inferences
       inferences.Clear();
       for (int i = 0; i < count; i++)
-        inferences.Add(pTron.FeedForward(training[i].inputs));
+        inferences.Add(perceptron.FeedForward(trainingData[i].inputs));
 
       Component.ExpireSolution(true);
     }
 
     // output
     line = new Line(-50, Function(-50), 0, 50, Function(50), 0);
-    Perceptron_line = pTron.ToLine(-50,50);
-    Weights = pTron.weights;
+    Perceptron_line = perceptron.ToLine(-50, 50);
+    Weights = perceptron.weights;
     inf = inferences;
-    error = pTron.error;
+    error = perceptron.error;
 
     List<GH_Point> points = new List<GH_Point>();
     for (int i = 0; i < count; i++)
     {
-      points.Add(new GH_Point(new Point3d(training[i].inputs[0], training[i].inputs[1], 0)));
+      points.Add(new GH_Point(new Point3d(trainingData[i].inputs[0], trainingData[i].inputs[1], 0)));
     }
-    Points = points;
 
+    Points = points;
   }
   #endregion
   #region Additional
 
-  Perceptron pTron;
-  TrainingData[] training;
+  Perceptron perceptron;
+  TrainingData[] trainingData;
   int count;
   List<int> inferences;
 
@@ -110,17 +110,17 @@ public abstract class Script_Instance_f445a : GH_ScriptInstance
   public TrainingData[] GenerateTrainingData(int nData)
   {
     Random rnd = new Random(DateTime.Now.Millisecond);
-    TrainingData[] training = new TrainingData[nData];
+    TrainingData[] trainingData = new TrainingData[nData];
     // make training points
-    for (int i = 0; i < training.Length; i++)
+    for (int i = 0; i < trainingData.Length; i++)
     {
       Point2d point = new Point2d(rnd.NextDouble() * 100 - 50, rnd.NextDouble() * 100 - 50);
-      int answer = 1;
-      if (point.Y < Function(point.X)) answer = -1;
-      training[i] = new TrainingData(point.X, point.Y, answer);
+      int label = 1;
+      if (point.Y < Function(point.X)) label = -1;
+      trainingData[i] = new TrainingData(point.X, point.Y, label);
     }
 
-    return training;
+    return trainingData;
   }
 
   public class Perceptron
@@ -156,10 +156,10 @@ public abstract class Script_Instance_f445a : GH_ScriptInstance
       else return 0;
     }
 
-    public void Train(double[] inputs, int answer)
+    public void Train(double[] inputs, int label)
     {
-      int guess = FeedForward(inputs);
-      error = answer - guess;
+      int prediction = FeedForward(inputs);
+      error = label - prediction;
       for (int i = 0; i < weights.Length; i++)
         weights[i] += error * inputs[i] * learningRate;
     }
@@ -174,16 +174,16 @@ public abstract class Script_Instance_f445a : GH_ScriptInstance
   public class TrainingData
   {
     public double[] inputs;
-    public int answer;
+    public int label;
 
-    public TrainingData(double x, double y, int a)
+    public TrainingData(double x, double y, int label)
     {
       inputs = new double[3];
       inputs[0] = x;
       inputs[1] = y;
       inputs[2] = 1; // bias
 
-      answer = a;
+      this.label = label;
     }
   }
   #endregion

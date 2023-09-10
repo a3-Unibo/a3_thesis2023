@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aless\\Documents\\_Università\\_Tesi\\2023\\CS course v2\\Learning\\Perceptron\\scripts\\GrasshopperScripts.csproj",
+      "projectUniqueName": "C:\\Users\\aless\\Documents\\_Università\\_Tesi\\2023\\CS course\\v2\\Learning\\Perceptron\\scripts\\GrasshopperScripts.csproj",
       "projectName": "GrasshopperScripts",
-      "projectPath": "C:\\Users\\aless\\Documents\\_Università\\_Tesi\\2023\\CS course v2\\Learning\\Perceptron\\scripts\\GrasshopperScripts.csproj",
+      "projectPath": "C:\\Users\\aless\\Documents\\_Università\\_Tesi\\2023\\CS course\\v2\\Learning\\Perceptron\\scripts\\GrasshopperScripts.csproj",
       "packagesPath": "C:\\Users\\aless\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aless\\Documents\\_Università\\_Tesi\\2023\\CS course v2\\Learning\\Perceptron\\scripts\\obj\\",
+      "outputPath": "C:\\Users\\aless\\Documents\\_Università\\_Tesi\\2023\\CS course\\v2\\Learning\\Perceptron\\scripts\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Users\\aless\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
